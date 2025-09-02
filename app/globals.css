@@ -1,0 +1,161 @@
+@import 'tailwindcss';
+
+/* Tata Mali Brand Variables */
+:root {
+    --tata-primary: #9acd32; /* Lime green */
+    --tata-secondary: #000000; /* Black */
+    --tata-accent: #adff2f; /* Green yellow */
+    --tata-background: #ffffff; /* White */
+    --tata-text-primary: #000000; /* Black */
+    --tata-text-secondary: #666666; /* Gray */
+    --tata-success: #22c55e; /* Green */
+    --tata-error: #ef4444; /* Red */
+    --tata-warning: #f59e0b; /* Amber */
+    --tata-info: #3b82f6; /* Blue */
+
+    /* Legacy variables for compatibility */
+    --background: #ffffff;
+    --foreground: #171717;
+    --tata-green: #9acd32;
+    --tata-dark: #000000;
+    --tata-gray: #666666;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background: #0a0a0a;
+        --foreground: #ededed;
+        --tata-background: #1f2937;
+        --tata-text-primary: #f9fafb;
+        --tata-text-secondary: #d1d5db;
+    }
+}
+
+/* Base styles */
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+html,
+body {
+    max-width: 100vw;
+    overflow-x: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+        sans-serif;
+    background: var(--background);
+    color: var(--foreground);
+}
+
+/* Tata Mali utility classes */
+.tata-green {
+    color: var(--tata-green);
+}
+
+.bg-tata-green {
+    background-color: var(--tata-green);
+}
+
+.tata-dark {
+    color: var(--tata-dark);
+}
+
+.bg-tata-dark {
+    background-color: var(--tata-dark);
+}
+
+.tata-gradient {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+}
+
+.tata-shadow {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.tata-shadow-lg {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.tata-transition {
+    transition: all 0.2s ease-in-out;
+}
+
+/* Button styles */
+.btn-tata-primary {
+    background-color: var(--tata-primary);
+    color: var(--tata-secondary);
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.btn-tata-primary:hover {
+    background-color: #8bc34a;
+    transform: translateY(-1px);
+}
+
+.btn-tata-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Input styles */
+.input-tata {
+    border: 2px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    width: 100%;
+    font-size: 1rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.input-tata:focus {
+    outline: none;
+    border-color: var(--tata-primary);
+    box-shadow: 0 0 0 3px rgba(154, 205, 50, 0.1);
+}
+
+.input-tata.error {
+    border-color: var(--tata-error);
+}
+
+.input-tata.error:focus {
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* Card styles */
+.card-tata {
+    background-color: white;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #f3f4f6;
+}
+
+/* Loading animation */
+@keyframes tata-pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.tata-pulse {
+    animation: tata-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Responsive utilities */
+@media (max-width: 640px) {
+    .card-tata {
+        padding: 1rem;
+        margin: 0.5rem;
+    }
+}

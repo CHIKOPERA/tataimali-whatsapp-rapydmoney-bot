@@ -1,0 +1,86 @@
+// Prisma schema for User, Wallet, Coupon, LedgerEntry, Transfer, MessageLog, Otp
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  phoneE164    String   @unique
+  firstName    String
+  lastName     String
+  createdAt    DateTime @default(now())
+  wallet       Wallet?
+  messages     MessageLog[] @relation("UserMessages")
+  otps         Otp[]        @relation("UserOtps")
+}
+
+model Wallet {
+  id           String   @id @default(uuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id])
+  balanceMinor Int      @default(0)
+  ledger       LedgerEntry[] @relation("WalletLedger")
+  transfersFrom Transfer[]   @relation("TransferFromWallet")
+  transfersTo   Transfer[]   @relation("TransferToWallet")
+  coupons      Coupon[]      @relation("WalletCoupons")
+}
+
+model Coupon {
+  id           String   @id @default(uuid())
+  token        String   @unique
+  status       String
+  amountMinor  Int
+  merchantId   String?
+  expiresAt    DateTime?
+  walletId     String?
+  wallet       Wallet?   @relation("WalletCoupons", fields: [walletId], references: [id])
+  redeemedAt   DateTime?
+}
+
+model LedgerEntry {
+  id           String   @id @default(uuid())
+  walletId     String
+  wallet       Wallet    @relation("WalletLedger", fields: [walletId], references: [id])
+  type         String
+  amountMinor  Int
+  createdAt    DateTime @default(now())
+  transferId   String?
+  couponId     String?
+}
+
+model Transfer {
+  id                String   @id @default(uuid())
+  fromWalletId      String
+  toWalletId        String
+  fromWallet        Wallet   @relation("TransferFromWallet", fields: [fromWalletId], references: [id])
+  toWallet          Wallet   @relation("TransferToWallet", fields: [toWalletId], references: [id])
+  amountMinor       Int
+  createdAt         DateTime @default(now())
+  idempotencyKey    String   @unique
+}
+
+model MessageLog {
+  id           String   @id @default(uuid())
+  wamid        String   @unique
+  payload      Json
+  intent       String?
+  createdAt    DateTime @default(now())
+  userId       String?
+  user         User?    @relation("UserMessages", fields: [userId], references: [id])
+}
+
+model Otp {
+  id           String   @id @default(uuid())
+  userId       String?
+  user         User?    @relation("UserOtps", fields: [userId], references: [id])
+  phoneE164    String
+  codeHash     String
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+}
