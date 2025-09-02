@@ -38,12 +38,12 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 
 
-#Keys
-WA_TOKEN=""
-WA_PHONE_NUMBER_ID=""
-WHATSAPP_VERIFY_TOKEN=""
-APP_DOWNLOAD_URL=""
-APP_USER_REGISTER_URL=""
+# Keys
+- WA_TOKEN=""
+- WA_PHONE_NUMBER_ID=""
+- WHATSAPP_VERIFY_TOKEN=""
+- APP_DOWNLOAD_URL=""
+- APP_USER_REGISTER_URL=""
 ### External API Configuration
-RAPYD_API_BASE_URL=""
-RAPYD_API_TOKEN=""
+- RAPYD_API_BASE_URL=""
+- RAPYD_API_TOKEN=""
