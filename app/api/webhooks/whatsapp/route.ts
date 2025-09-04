@@ -3,6 +3,7 @@ import { sendInteractive, sendText } from '@/lib/wa'
 import { getOrCreateUserWallet } from '@/lib/services/external-user'
 import { redeemCouponTx } from '@/lib/services/external-coupon'
 import { transferTx } from '@/lib/services/external-transfer'
+import { ca } from 'zod/locales'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -283,21 +284,26 @@ async function handleClaim(token: string, normalizedFrom: string, from: string) 
 
         console.log('Handling claim for wallet:', wallet)
 
-        const coupon = await redeemCouponTx({ token, walletId: wallet.id })
-        const updatedWallet = await getOrCreateUserWallet(normalizedFrom)
-        const balance = updatedWallet.wallet.balance ?? 0
+        try {
+            const coupon = await redeemCouponTx({ token, walletId: wallet.id })
+            const updatedWallet = await getOrCreateUserWallet(normalizedFrom)
+            const balance = updatedWallet.wallet.balance ?? 0
 
-        await safeSendInteractive(
-            from,
-            `🎉 You've claimed R${
-                coupon?.amount?.toFixed(2) || '0.00'
-            }. New balance is R${balance.toFixed(2)}. What would you like to do next?`,
-            [
-                { id: 'check_balance', title: 'Check Balance' },
-                { id: 'send_money', title: 'Send Money' },
-                { id: 'download_app', title: 'Download App' },
-            ]
-        )
+            await safeSendInteractive(
+                from,
+                `🎉 You've claimed R${
+                    coupon?.amount?.toFixed(2) || '0.00'
+                }. New balance is R${balance.toFixed(2)}. What would you like to do next?`,
+                [
+                    { id: 'check_balance', title: 'Check Balance' },
+                    { id: 'send_money', title: 'Send Money' },
+                    { id: 'download_app', title: 'Download App' },
+                ]
+            )
+        } catch (error) {
+            console.error('Claim error:', error)
+            await safeSendText(from, 'Unable to redeem. Maybe already used or expired.')
+        }
     } catch (error) {
         console.error('Claim error:', error)
         await safeSendText(from, 'Unable to redeem. Maybe already used or expired.')
